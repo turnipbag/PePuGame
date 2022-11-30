@@ -1,2 +1,2 @@
 # PePuGame
-PePu randomizer game
+PePu randomizer racing game
