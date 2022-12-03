@@ -4,6 +4,7 @@ import logging
 import pygame
 from pepugame.player import Player
 from pepugame.settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from pepugame.finish_line import FinishLine
 
 def game_loop() -> str|None:
     """Game loop logic
@@ -17,9 +18,9 @@ def game_loop() -> str|None:
     clock = pygame.time.Clock()
     pygame.init()
 
-    player_group = pygame.sprite.Group()
-    player = Player(player_group, "red")
-
+    all_sprites = pygame.sprite.Group()
+    setup_finishline(all_sprites, 20)
+    Player(all_sprites, "green")
 
     logging.basicConfig(format="[%(asctime)-15s] %(levelname)s: %(message)s",
                             level="INFO"
@@ -36,8 +37,8 @@ def game_loop() -> str|None:
 
             display_surface.fill((0,0,0))
 
-            player_group.update(dt)
-            player_group.draw(display_surface)
+            all_sprites.update(dt)
+            all_sprites.draw(display_surface)
 
             pygame.display.update()
 
@@ -47,3 +48,15 @@ def game_loop() -> str|None:
         logger.error("Unhandled exception occurred - please contact developers.\n",exc_info=True)
         return "Stopped due to an exception."
     return None
+
+def setup_finishline(groups: pygame.sprite.Group, box_width: int) -> None:
+    """Create objects that represent the finishline
+    """
+    count: int = WINDOW_HEIGHT // box_width
+    for pos in range(count):
+        x: int = WINDOW_WIDTH - 100
+        if pos % 2 != 0:
+            x = WINDOW_WIDTH - 80
+        y: int = box_width * pos
+        FinishLine(groups, (x,y), "white")
+    
