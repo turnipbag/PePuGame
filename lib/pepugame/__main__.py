@@ -1,12 +1,13 @@
 """Main module of pepugame
 """
 import sys
-from pepugame.game import game_loop
+from pepugame.game import Game
 
 def main() -> str|None:
     """Main module of pepugame
     """
-    return game_loop()
+    game = Game()
+    return game.start()
 
 if __name__ == "__main__":
     sys.exit(main())
